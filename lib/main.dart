@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scanqr/screens/create_qr_code.dart';
 import 'package:scanqr/screens/scan_qr_code.dart';
 
 void main() {
@@ -17,7 +18,24 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ScanQrCodeScreen(),
+      home: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
+              bottom: const TabBar(tabs: [
+                Tab(
+                  text: "Scan",
+                ),
+                Tab(
+                  text: "Create",
+                )
+              ]),
+            ),
+            body: const TabBarView(children: [
+              ScanQrCodeScreen(),
+              CreateQrCodeScreen(),
+            ]),
+          )),
     );
   }
 }
