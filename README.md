@@ -1,16 +1,8 @@
 # scanqr
 
-A new Flutter project.
+A simple QrCode scanner and creator
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![1](https://github.com/IamHuaruHafiz/QrCodeScanner/assets/127285434/f2101a36-324c-43ef-991d-7befc0e8c689)
+![3](https://github.com/IamHuaruHafiz/QrCodeScanner/assets/127285434/8b97a64e-5831-442c-83d1-cb9593c68564)
+![2](https://github.com/IamHuaruHafiz/QrCodeScanner/assets/127285434/b45a8365-8a0a-4a27-a810-e63913541638)
