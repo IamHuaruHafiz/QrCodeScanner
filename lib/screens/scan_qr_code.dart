@@ -45,49 +45,34 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.yellow.shade600,
       body: Column(children: [
-        Flexible(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                    onPressed: () async {
-                      await controller?.toggleFlash();
-                      setState(() {
-                        if (cam == false) {
-                          cam = true;
-                        } else if (cam == true) {
-                          cam = false;
-                        }
-                      });
-                    },
-                    icon:
-                        Icon(cam == false ? Icons.flash_off : Icons.flash_on)),
-                Container(
-                  margin: const EdgeInsets.all(8),
-                  child: IconButton(
-                      onPressed: () async {
-                        await controller?.flipCamera();
-                        setState(() {});
-                        controller?.getCameraInfo();
-                      },
-                      icon: const Icon(Icons.cameraswitch_sharp)),
-                )
-              ],
-            )),
         Expanded(
           flex: 4,
           child: _buildQrView(context),
         ),
         Flexible(
             child: result != null
-                ? TextButton(
-                    onPressed: () {
-                      _launchUrl(result!.code);
-                    },
-                    child: Text("${result!.code}"))
-                : const Center(child: Text("Scan a code")))
+                ? Center(
+                    child: TextButton(
+                        onPressed: () {
+                          _launchUrl(result!.code);
+                        },
+                        child: Text(
+                          "${result!.code}",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        )),
+                  )
+                : const Center(
+                    child: Text(
+                    "Scan a code",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )))
       ]),
     );
   }
@@ -97,17 +82,51 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
             MediaQuery.of(context).size.height < 400)
         ? 150.0
         : 300.0;
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-        borderColor: Colors.red,
-        borderRadius: 12,
-        borderLength: 30,
-        borderWidth: 10,
+    return Stack(children: [
+      QRView(
+        key: qrKey,
+        onQRViewCreated: _onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+          borderColor: Colors.white,
+          borderRadius: 12,
+          borderLength: 30,
+          borderWidth: 10,
+        ),
+        onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
       ),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
-    );
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+              onPressed: () async {
+                await controller?.toggleFlash();
+                setState(() {
+                  if (cam == false) {
+                    cam = true;
+                  } else if (cam == true) {
+                    cam = false;
+                  }
+                });
+              },
+              icon: Icon(
+                cam == false ? Icons.flash_off : Icons.flash_on,
+                color: cam == false ? Colors.grey : Colors.white,
+              )),
+          Container(
+            margin: const EdgeInsets.all(8),
+            child: IconButton(
+                onPressed: () async {
+                  await controller?.flipCamera();
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.cameraswitch_sharp,
+                  color: Colors.grey,
+                )),
+          )
+        ],
+      ),
+    ]);
   }
 
   void _onQRViewCreated(QRViewController controller) {

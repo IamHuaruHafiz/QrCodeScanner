@@ -19,25 +19,11 @@ class _CreateQrCodeScreenState extends State<CreateQrCodeScreen> {
 
   ScreenshotController screenShotController = ScreenshotController();
 
-  void shareShot() async {
-    Uint8List imageFile;
-
-    try {
-      await screenShotController.capture().then((image) async {
-        setState(() {
-          imageFile = image!;
-        });
-        if (image != null) {
-          final directory = await getApplicationDocumentsDirectory();
-          final imagePath = await File("${directory.path}/image.png").create();
-          await imagePath.writeAsBytes(image);
-
-          await Share.shareXFiles([XFile(imagePath.path)]);
-        }
-      });
-    } catch (e) {
-      print(e.toString());
-    }
+  Future shareShot(Uint8List imageFile) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final imagePath = await File("${directory.path}/image.png").create();
+    imagePath.writeAsBytesSync(imageFile);
+    await Share.shareXFiles([XFile(imagePath.path)], text: controller.text);
   }
 
   @override
@@ -49,33 +35,56 @@ class _CreateQrCodeScreenState extends State<CreateQrCodeScreen> {
             Screenshot(
               controller: screenShotController,
               child: QrImageView(
-                size: 300,
                 data: controller.text,
               ),
             ),
-            TextFormField(
-              onChanged: (val) {
-                setState(() {
-                  controller.text = val;
-                });
-              },
-              controller: controller,
-              decoration: InputDecoration(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                cursorColor: Colors.black,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    controller.text = val;
+                  });
+                },
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: "Enter text to generate code",
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.purple)),
+                      borderSide: const BorderSide(
+                        width: 2,
+                      )),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.purple.shade700)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.red.shade600))),
+                      borderSide: const BorderSide(
+                        width: 2,
+                      )),
+                ),
+              ),
             ),
             ElevatedButton(
-                onPressed: () {
-                  shareShot();
+                style: ButtonStyle(
+                    foregroundColor:
+                        const MaterialStatePropertyAll<Color>(Colors.black),
+                    backgroundColor: MaterialStatePropertyAll<Color>(
+                        Colors.yellow.shade500)),
+                onPressed: () async {
+                  final image = await screenShotController
+                      .captureFromWidget(QrImageView(data: controller.text));
+                  shareShot(image);
                 },
-                child: const Text("Share"))
+                child: const Text(
+                  "Share code",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ))
           ],
         ),
       ),
