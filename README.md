@@ -1,4 +1,4 @@
-# scanqr
+# QrCodeScanner&Creator
 
 A simple QrCode scanner and creator
 
