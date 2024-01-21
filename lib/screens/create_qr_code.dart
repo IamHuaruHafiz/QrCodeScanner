@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:scanqr/key.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -29,12 +30,7 @@ class _CreateQrCodeScreenState extends State<CreateQrCodeScreen> {
   int numberOfTimessLoaded = 0;
   InterstitialAd? _ad;
   void loadInterstitialAd() {
-//remember to set these ids to the original ids.
-//android:ca-app-pub-3972140274467214/1623012742
-//ios:ca-app-pub-3972140274467214/1516035689
-    final bannerAdsUnitId = Platform.isAndroid
-        ? "ca-app-pub-3940256099942544/1033173712"
-        : "ca-app-pub-3940256099942544/4411468910";
+    final bannerAdsUnitId = Platform.isAndroid ? androidKey : iosKey;
 
     InterstitialAd.load(
         adUnitId: bannerAdsUnitId,
