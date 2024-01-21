@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:scanqr/screens/create_qr_code.dart';
 import 'package:scanqr/screens/scan_qr_code.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(const MyApp());
-  });
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

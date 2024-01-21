@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ScanQrCodeScreen extends StatefulWidget {
@@ -42,10 +40,11 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
   }
 
   bool cam = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow.shade600,
+      backgroundColor: const Color.fromARGB(255, 253, 216, 53),
       body: Column(children: [
         Expanded(
           flex: 4,
@@ -78,10 +77,6 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
     return Stack(children: [
       QRView(
         key: qrKey,
